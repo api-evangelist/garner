@@ -1,0 +1,287 @@
+openapi: 3.0.3
+info:
+  title: Garner Health Facilities API
+  version: v1.11.0
+  license:
+    name: Commercial
+    url: https://getgarner.com
+  description: "Garner's APIs power its core provider recommendation experience. These recommendations are based on over 60 billion\nanonymized health insurance claims that paint a clear picture of a patient's journey through the healthcare system. \n\nUsing these data, Garner evaluates whether physicians practice evidence-based medicine as defined by major,\nrespected healthcare journals. Garner has designed over 550 clinical and financial metrics that look closely\nat every decision a physician makes rather than relying on standard industry episode groupers. This results in\nrankings that are much more transparent and trustworthy and enable better-informed decisions for patients,\nphysicians, and payers.\n\n# Authentication: \n  \n## OAuth2.0\n\n*If you were provided a JWT at account setup rather than an API client id and client secret, please refer to instructions for [legacy token authentication.](#section/Authentication:/Legacy-token)*\n\nGarner APIs authenticate with OAuth 2.0 access tokens. You will be provided an API client ID and API client secret during account setup. \nThe client ID and client secret can be exchanged for an access token which in turn authenticates your app when making calls to Garner's APIs. \n\nTo obtain an access token, make a request to the `POST oauth2/token/` endpoint. In the request body, include the `client_id`, `client_secret`, \nand `grant_type=client_credentials`. This response will contain an `access_token`, the `token_type` which will always be \"Bearer\", \nand `expires_in` which is the lifetime in seconds of the token. \n\nThe access token can be used to authenticate with Garner's APIs. When making a request, provide the access token as a \nbearer token in the `Authorization` header. \n\nFor example, \n\n**JavaScript**\n```js\n/* Get the token */\nconst { access_token, token_type, expires_in } = await fetch('https://api.getgarner.com/oauth2/token', {\n  method: 'POST',\n  headers: { 'Content-Type': 'application/x-www-form-urlencoded' },\n  body: new URLSearchParams({\n    grant_type: 'client_credentials',\n    client_id: '<YOUR_API_CLIENT_ID_HERE>',\n    client_secret: '<YOUR_API_CLIENT_SECRET_HERE>',\n  }),\n}).then(r => r.json());\n\n\n/* Use the token */\nconst { providers } = fetch(\n  'https://api.getgarner.com/providers',\n  {\n    method: 'GET',\n    headers: {'Authorization': `Bearer ${<YOUR_ACCESS_TOKEN_HERE>}`},\n    query: ...\n  },\n).then(response => response.json());\n\n``` \n**cURL**\n```sh\n# Get the token\ncurl --location 'https://api.garner.health/oauth2/token' \\\n--header 'Content-Type: application/x-www-form-urlencoded' \\\n--data-urlencode 'grant_type=client_credentials' \\\n--data-urlencode 'client_id=<YOUR_API_CLIENT_ID_HERE' \\\n--data-urlencode 'client_secret=<YOUR_API_CLIENT_SECRET_HERE>'\n\n# Use the token\ncurl -G https://api.getgarner.com/providers -H 'Authorization: Bearer <YOUR_ACCESS_TOKEN_HERE>'\n```\n\n\n### Managing the access token\nThe access token will only be valid for 15 minutes. We recommend caching the token in your application so that it can be reused up to its expiration. This can be managed by the app programmatically by implementing a `GarnerTokenClient` class like the following:\n```typescript\nclass GarnerTokenClient {\n  /** Cached access token */\n  private currentToken: string | undefined;\n  /** Time at which the cached token expires */\n  private expirationTime: number | undefined;\n\n  /** \n  *  Fetches a new access token from the `POST /oauth2/token` endpoint,\n  *  then caches the token and its expiration time.\n  *  Returns a promise that resolves to the newly fetched access token\n  */\n  private async fetchNewToken(): Promise<string> {\n    const currentTime = Date.now();\n    const { access_token: accessToken, expires_in: expiresIn } = await fetch('https://api.getgarner.com/oauth2/token', {\n      method: 'POST',\n      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },\n      body: new URLSearchParams({\n        grant_type: 'client_credentials',\n        client_id: '<YOUR_API_CLIENT_ID_HERE>',\n        client_secret: '<YOUR_API_CLIENT_SECRET_HERE>',\n      }),\n    }).then(r => r.json());\n    // Cache the access token\n    this.currentToken = accessToken;\n    // Set the expiration time as the current time plus the number of ms until the token expires. Subtract a 15 second buffer to account for lag.\n    this.expirationTime = (currentTime + expiresIn * 1000) - 15000; \n    return accessToken;\n  }\n\n  /** \n  *  Returns the cached access token if it is valid. \n  *  Otherwise, fetches a new token.\n  */\n  async getToken(): Promise<string> {\n    if (this.currentToken && this.expirationTime && Date.now() < this.expirationTime) {\n      return this.currentToken;\n    }\n    return await this.fetchNewToken();\n  }\n}\n```\n\nThen when making a request to Garner's APIs you can use the response of `getToken()` from an instance of the `GarnerTokenClient` class as your token.\n\nFor example, \n\n```typescript\nconst garnerTokenClient = new GarnerTokenClient();\n\nfetch('https://api.getgarner.com/providers',\n  {\n    method: 'GET',\n    headers: {'Authorization': `Bearer ${await garnerTokenClient.getToken()}`},\n    query: ...\n  },\n);\n\n```\n## Legacy token\n\n*If you were provided an API client id and client secret at account setup rather than a token, please refer to instructions for [OAuth2.0 authentication.](#section/Authentication:/OAuth2.0)*\n\nAuthenticating is done with an JSON Web Token (JWT) provided as a `Bearer` token to the `Authorization` header.\nYou will have received a token during account setup.\n\nFor example, \n```sh\ncurl -G https://api.getgarner.com -H 'Authorization: Bearer <YOUR_API_TOKEN_HERE>'\n```\n"
+servers:
+- url: https://api.getgarner.com
+security:
+- ApiToken: []
+tags:
+- name: Facilities
+paths:
+  /facilities/{facility_id}:
+    parameters:
+    - $ref: '#/components/parameters/acceptVersion'
+    get:
+      description: "This endpoint returns details about a single location of a facility including data for each of the facility's specialties \nand directory data for the requested location.\n\nNote that one facility ID can be related to many different locations. This endpoint \nwill only show data for one location of a facility, according to the location ID included on the request.\n"
+      operationId: GetFacility
+      summary: Get details about a facility
+      parameters:
+      - name: facility_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: The Garner ID for the facility. It will always have the prefix `f.`
+          pattern: ^f\.[0-9a-f]+$
+          example: f.l3ac4f1a01275ca68e6c932ad4722491
+      - name: location_id
+        required: true
+        description: The Garner location ID for a specific location of the requested facility ID.
+        in: query
+        schema:
+          type: string
+      - name: network_id
+        description: The list of networks to include on the facility response.
+        in: query
+        required: true
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        '200':
+          description: Facility found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Facility'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          description: Missing required query parameter
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+      tags:
+      - Facilities
+components:
+  schemas:
+    WorkingHours:
+      description: The days and times of day the provider's office is open
+      type: object
+      properties:
+        day:
+          $ref: '#/components/schemas/DayOfWeek'
+        open:
+          type: number
+          description: The time of day the office opens. Represented as minutes after midnight
+        close:
+          type: number
+          description: The time of day the office closes. Represented as minutes after midnight
+    Position:
+      description: Global coordinates
+      type: object
+      properties:
+        lat:
+          type: number
+          description: Latitude
+        lng:
+          type: number
+          description: Longitude
+      required:
+      - lat
+      - lng
+      additionalProperties: false
+    LocationBase:
+      type: object
+      properties:
+        lines:
+          type: array
+          items:
+            type: string
+          description: The lines of an address, in order
+        city:
+          type: string
+          description: The city of the address
+        state:
+          type: string
+          description: The state of the address
+        zip_code:
+          type: string
+          description: The zip code of the address
+        position:
+          $ref: '#/components/schemas/Position'
+        hours:
+          description: The days and times of day the provider's office is open
+          type: array
+          items:
+            $ref: '#/components/schemas/WorkingHours'
+        phone_number:
+          type: string
+          format: '[0-9]{10}'
+          description: 10-digit phone number
+          example: 5555555555
+        fax_number:
+          type: string
+          format: '[0-9]{10}'
+          description: 10-digit fax number
+          example: 5555555555
+      additionalProperties: false
+      required:
+      - lines
+      - city
+      - state
+      - zip_code
+      - position
+    FacilityNetwork:
+      type: object
+      properties:
+        network_id:
+          type: string
+          description: Unique identifier for the network
+        is_in_network:
+          type: boolean
+          description: Whether the provider is in network for the given specialty at the given location
+      required:
+      - network_id
+      - is_in_network
+      additionalProperties: false
+    Facility:
+      type: object
+      properties:
+        id:
+          type: string
+          pattern: ^f\.[0-9a-f]+$
+          description: Unique identifier for the provider
+        npi:
+          type: string
+          description: National Provider Identifier
+        organization_name:
+          type: string
+          description: Name of the facility
+        specialties:
+          type: object
+          description: A map of all the facility location's specialties keyed by the specialty identifier
+          additionalProperties:
+            x-additionalPropertiesName: specialty
+            $ref: '#/components/schemas/FacilitySpecialtyLocation'
+        location:
+          $ref: '#/components/schemas/FacilityLocation'
+      required:
+      - id
+      - organization_name
+      - specialties
+      - location
+      additionalProperties: false
+      example:
+        id: f.4e8ca318519553bfaf27010148931d12
+        npi: 1881670123
+        organization_name: Bronx Care Hospital
+        specialties:
+          mri_imaging_center:
+            networks:
+            - network_id: aetna
+              is_in_network: true
+              is_top_provider: false
+            - network_id: cigna
+              is_in_network: true
+              is_top_provider: true
+          xray_imaging_center:
+            networks:
+            - network_id: aetna
+              is_in_network: true
+              is_top_provider: true
+            - network_id: cigna
+              is_in_network: false
+              is_top_provider: false
+        location:
+          location_id: 0110bfc5-664d-5276-a5b2-99d57a0207e6
+          lines:
+          - 2739 3rd Ave
+          - '# 45'
+          city: Bronx
+          state: NY
+          zip_code: '10451'
+          position:
+            lat: 40.8144984
+            lng: -73.920922
+          hours:
+          - day: 1
+            open: 480
+            close: 1020
+          - day: 2
+            open: 480
+            close: 1020
+          - day: 3
+            open: 480
+            close: 1020
+          - day: 4
+            open: 480
+            close: 1020
+          - day: 5
+            open: 480
+            close: 1020
+          phone_number: '7189927669'
+          fax_number: '7189927669'
+    DayOfWeek:
+      type: number
+      enum:
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      - 7
+      description: ISO day of week (e.g. 1 is Monday)
+    ServiceError:
+      type: object
+      properties:
+        requestId:
+          type: number
+        message:
+          type: string
+        data:
+          type: object
+          additionalProperties: true
+      required:
+      - message
+      additionalProperties: false
+    FacilityLocation:
+      description: The address of the facility
+      allOf:
+      - type: object
+        properties:
+          location_id:
+            description: Unique identifier for the location
+            type: string
+        required:
+        - location_id
+      - $ref: '#/components/schemas/LocationBase'
+    FacilitySpecialtyLocation:
+      type: object
+      properties:
+        networks:
+          type: array
+          items:
+            $ref: '#/components/schemas/FacilityNetwork'
+      required:
+      - networks
+  responses:
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ServiceError'
+  parameters:
+    acceptVersion:
+      name: Accept-Version
+      in: header
+      required: true
+      schema:
+        type: integer
+        enum:
+        - 1
+      description: The API major version.
+  securitySchemes:
+    ApiToken:
+      type: http
+      scheme: bearer
+      bearerFormat: API_TOKEN
