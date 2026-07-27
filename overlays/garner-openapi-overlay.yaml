@@ -1,0 +1,36 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Garner Health API
+  version: 1.0.0
+extends: openapi/garner-openapi-original.json
+actions:
+- target: $.info
+  update:
+    x-apievangelist-rating: 3
+    x-apievangelist-notes: >-
+      Real, well-described OpenAPI 3.0.3 harvested from garnerhealth.redoc.ly.
+      OAuth2 client-credentials + legacy JWT bearer; custom ServiceError envelope
+      (not RFC 9457); Accept-Version header versioning.
+- target: $
+  update:
+    tags:
+    - name: Providers
+      description: Ranked and directory provider search.
+    - name: Professionals
+      description: Individual clinician detail and quality metrics.
+    - name: Facilities
+      description: Care facility detail and directory data.
+    - name: Annotations
+      description: Provider-record accuracy corrections.
+- target: $.paths['/providers'].get
+  update:
+    tags: [Providers]
+- target: $.paths['/professionals/{professional_id}'].get
+  update:
+    tags: [Professionals]
+- target: $.paths['/facilities/{facility_id}'].get
+  update:
+    tags: [Facilities]
+- target: $.paths['/provider-annotations/{provider_id}'].post
+  update:
+    tags: [Annotations]

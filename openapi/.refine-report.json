@@ -1,0 +1,20 @@
+{
+  "provider": "garner",
+  "sources": [
+    "garner-facilities-api-openapi.yml",
+    "garner-professionals-api-openapi.yml",
+    "garner-provider-annotations-api-openapi.yml",
+    "garner-providers-api-openapi.yml"
+  ],
+  "outputs": [
+    "garner-facilities-api-openapi.yml",
+    "garner-professionals-api-openapi.yml",
+    "garner-provider-annotations-api-openapi.yml",
+    "garner-providers-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}

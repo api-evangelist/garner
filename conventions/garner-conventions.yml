@@ -1,0 +1,52 @@
+generated: '2026-07-19'
+method: searched
+source: openapi/garner-openapi-original.json
+docs: https://garnerhealth.redoc.ly
+authentication:
+  style: oauth2-client-credentials + bearer
+  detail: See authentication/garner-authentication.yml
+  header: 'Authorization: Bearer <access_token>'
+versioning:
+  scheme: header + semver
+  major_version_header:
+    name: Accept-Version
+    required: true
+    current: 1
+    note: Required integer major-version header on API requests.
+  info_version: v1.11.0
+  base_path_versioning: false
+pagination:
+  style: limit
+  request_params:
+  - name: limit
+    in: query
+    note: Caps the number of results returned by list/search endpoints (BaseQuery).
+  cursor: null
+  offset: null
+  note: >-
+    Search endpoints (/providers) return a bounded result set governed by the
+    `limit` query parameter; no cursor/offset pagination is documented.
+idempotency:
+  supported: false
+  note: No idempotency key header or parameter is documented or present in the OpenAPI.
+error_envelope:
+  shape: ServiceError
+  content_type: application/json
+  fields:
+  - requestId
+  - message
+  - data
+  rfc9457: false
+  note: >-
+    Errors use a custom ServiceError envelope (requestId, message, data), not
+    RFC 9457 application/problem+json. See errors/garner-problem-types.yml.
+request_tracing:
+  request_id_field: requestId
+  note: The ServiceError envelope echoes a numeric requestId for support/tracing.
+rate_limit_signaling:
+  documented: false
+  note: No published rate-limit headers or quota policy found in the API reference.
+cross_links:
+  authentication: authentication/garner-authentication.yml
+  errors: errors/garner-problem-types.yml
+  lifecycle: lifecycle/garner-lifecycle.yml

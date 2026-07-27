@@ -1,0 +1,39 @@
+generated: '2026-07-19'
+method: derived
+source: openapi/garner-openapi-original.json
+format: custom
+envelope:
+  schema: ServiceError
+  content_type: application/json
+  fields:
+  - name: requestId
+    type: number
+    note: Numeric identifier echoed for support/tracing.
+  - name: message
+    type: string
+    required: true
+    note: Human-readable error message.
+  - name: data
+    type: object
+    note: Optional structured error detail (additionalProperties allowed).
+  rfc9457: false
+problems:
+- status: 422
+  title: Unprocessable Entity (validation error)
+  schema: ServiceError
+  description: >-
+    Request query/body failed validation (e.g. missing/invalid lat/lng, plan,
+    specialty, or annotation fields).
+  applies_to:
+  - GetRankedProviders
+  - CreateProviderAnnotations
+  - GetProfessional
+  - GetFacility
+- status: 404
+  title: Not Found
+  schema: ServiceError
+  description: >-
+    The requested professional or facility id does not exist.
+  applies_to:
+  - GetProfessional
+  - GetFacility

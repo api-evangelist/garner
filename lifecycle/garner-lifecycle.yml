@@ -1,0 +1,25 @@
+generated: '2026-07-19'
+method: searched
+source: https://garnerhealth.redoc.ly
+versioning:
+  scheme: header + semver
+  major_version_header: Accept-Version
+  current_major: 1
+  info_version: v1.11.0
+  docs: https://garnerhealth.redoc.ly
+deprecation:
+  policy_url: null
+  sunset_header: false
+  note: >-
+    A legacy JWT token auth path is documented alongside the current OAuth2
+    client-credentials flow, but no formal deprecation policy or RFC 8594
+    Sunset/Deprecation header support is published.
+sla:
+  url: null
+  uptime_target: null
+status_page: null
+deprecated_operations: []
+notes: >-
+  Garner versions the API by required Accept-Version major-version header plus a
+  semver info.version (v1.11.0). No public status page, SLA, or deprecation
+  policy page was found.

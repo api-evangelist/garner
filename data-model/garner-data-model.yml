@@ -1,0 +1,67 @@
+generated: '2026-07-19'
+method: derived
+source: openapi/garner-openapi-original.json
+entities:
+- name: RankedProvider
+  description: A provider recommendation returned by the ranked /providers search, scored by Garner quality/cost analytics.
+  schema: RankedProvider
+- name: ProviderDirectoryEntry
+  description: A provider record returned by directory-mode search.
+  schema: ProviderDirectoryEntry
+- name: Professional
+  description: An individual clinician, with per-specialty quality metrics and practice locations.
+  schema: Professional
+- name: Facility
+  description: A care facility, with specialty data and directory locations.
+  schema: Facility
+- name: Annotation
+  description: A correction/accuracy annotation submitted against a provider record.
+  schema: Annotation
+- name: Location
+  description: A practice/facility address with position (lat/lng) and working hours.
+  schema: Location
+relationships:
+- from: Professional
+  type: has_many
+  to: ProfessionalSpecialty
+  via: specialties
+- from: Professional
+  type: has_many
+  to: ProfessionalLocation
+  via: locations
+- from: Professional
+  type: has_many
+  to: ProfessionalNetwork
+  via: networks
+- from: ProfessionalSpecialty
+  type: has_many
+  to: ProfessionalSpecialtyLocation
+  via: locations
+- from: Facility
+  type: has_many
+  to: FacilityLocation
+  via: locations
+- from: Facility
+  type: has_many
+  to: FacilitySpecialtyLocation
+  via: specialtyLocations
+- from: Facility
+  type: has_many
+  to: FacilityNetwork
+  via: networks
+- from: Location
+  type: has_one
+  to: Position
+  via: position
+- from: Location
+  type: has_many
+  to: WorkingHours
+  via: hours
+- from: Annotation
+  type: belongs_to
+  to: RankedProvider
+  via: provider_id
+notes: >-
+  Derived from OpenAPI component schema $ref links and id-reference fields.
+  provider-annotations are keyed by provider_id; professionals and facilities
+  are fetched by their own ids.

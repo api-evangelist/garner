@@ -1,0 +1,12 @@
+generated: '2026-07-19'
+method: generated
+source: openapi/garner-openapi-original.json
+skills:
+- file: garner-find-top-providers.md
+  name: Find top providers near a member
+  api: openapi/garner-openapi-original.json
+  operations: [GetRankedProviders, GetProfessional]
+- file: garner-directory-lookup-and-annotate.md
+  name: Directory lookup and accuracy annotation
+  api: openapi/garner-openapi-original.json
+  operations: [GetProfessional, GetFacility, CreateProviderAnnotations]
