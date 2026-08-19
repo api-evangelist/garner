@@ -1,0 +1,318 @@
+{
+  "item": [
+    {
+      "id": "1decfbdb-6ede-4e2a-93db-087670be1c48",
+      "name": "Providers",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "17e95697-a224-4b71-8a34-80c0327b0a91",
+          "name": "Get a list of providers near a position",
+          "request": {
+            "name": "Get a list of providers near a position",
+            "description": {
+              "content": "This endpoint supports two modes of querying. Depending on the query parameter you provide, a different result\nwill be returned.\n\n| Query Parameter | Search Mode | Query Type | Result Type |\n| -- | -- | -- | -- |\n| `specialty` | Ranked Search | `RankedProviderQuery` | `RankedProviderList` |\n| `name` | Directory Search | `DirectorySearchQuery` | `DirectorySearchResultList` |\n| `npi` | Directory Search | `DirectorySearchQuery` | `DirectorySearchResultList` |\n\n\n### Ranked Search (Primary)\n\nPerforms a ranked query for a specialty near a specific `Position`. This will return \nresults in rank-order, where the first `Provider` in the list is the most highly recommended based on distance, \nquality, cost, and patient reviews.\n\n### Directory Search (Secondary)\n\nPerforms a lookup for a professional by name or NPI near a specific Position; facilities are not currently \nsupported. **This will return results by relevance to the query. Providers returned are not necessarily\nrecommended by Garner.**\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "providers"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "networkId",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "plan",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "specialty",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "gender",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "language",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "lat",
+                  "value": "<number>"
+                },
+                {
+                  "disabled": false,
+                  "key": "lng",
+                  "value": "<number>"
+                },
+                {
+                  "disabled": false,
+                  "key": "zipCode",
+                  "value": "<[0-9]{5}>"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "15"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) The API major version.",
+                "key": "Accept-Version",
+                "value": "<integer>"
+              },
+              {
+                "disabled": false,
+                "description": "Correlation ID to be provided on responses",
+                "key": "Request-ID",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "30678d35-be44-44eb-8187-bf2d3500c6af",
+              "name": "Providers resolved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "providers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "networkId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "plan",
+                      "value": "core"
+                    },
+                    {
+                      "key": "specialty",
+                      "value": "adult_general_gastroenterologist"
+                    },
+                    {
+                      "key": "gender",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "language",
+                      "value": "fas"
+                    },
+                    {
+                      "key": "lat",
+                      "value": "40.8144984"
+                    },
+                    {
+                      "key": "lng",
+                      "value": "-74.259863"
+                    },
+                    {
+                      "key": "zipCode",
+                      "value": "10451"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "15"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) The API major version.",
+                    "key": "Accept-Version",
+                    "value": "<integer>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Correlation ID to be provided on responses",
+                    "key": "Request-ID",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"providers\": [\n    {\n      \"distanceMi\": 4146.289457284973,\n      \"id\": \"string\",\n      \"location\": {\n        \"lines\": [\n          \"string\",\n          \"string\"\n        ],\n        \"city\": \"string\",\n        \"state\": \"string\",\n        \"position\": {\n          \"lat\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"lng\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"id\": \"string\",\n        \"name\": \"string\",\n        \"providerCorporationName\": \"NYU Langone Health\",\n        \"allProviderCorporations\": [\n          \"NYU Langone Health\",\n          \"Mount Sinai Health System\"\n        ]\n      },\n      \"phoneNumber\": \"string\",\n      \"specialty\": \"adult_general_gastroenterologist\",\n      \"npi\": \"string\",\n      \"firstName\": \"string\",\n      \"lastName\": \"string\",\n      \"credentials\": \"MD\",\n      \"gender\": \"female\",\n      \"organizationName\": \"Mount Sinai\",\n      \"languages\": [\n        \"string\",\n        \"string\"\n      ],\n      \"metrics\": [\n        {\n          \"id\": \"id=\\\"Patient Outcomes\\\"\",\n          \"value\": \"good\"\n        },\n        {\n          \"id\": \"id=\\\"Patient Outcomes\\\"\",\n          \"value\": \"very_good\"\n        }\n      ],\n      \"overallScore\": 1,\n      \"reviewStars\": 4.678127920690477,\n      \"hours\": [\n        {\n          \"day\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"open\": 1168.0401950440323,\n          \"close\": 4004.7947753217304\n        },\n        {\n          \"day\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"open\": 2571.8302168743767,\n          \"close\": 9231.225617385955\n        }\n      ],\n      \"faxNumber\": \"string\"\n    },\n    {\n      \"distanceMi\": 2607.8148689421732,\n      \"id\": \"string\",\n      \"location\": {\n        \"lines\": [\n          \"string\",\n          \"string\"\n        ],\n        \"city\": \"string\",\n        \"state\": \"string\",\n        \"position\": {\n          \"lat\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"lng\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"id\": \"string\",\n        \"name\": \"string\",\n        \"providerCorporationName\": \"NYU Langone Health\",\n        \"allProviderCorporations\": [\n          \"NYU Langone Health\",\n          \"Mount Sinai Health System\"\n        ]\n      },\n      \"phoneNumber\": \"string\",\n      \"specialty\": \"adult_general_gastroenterologist\",\n      \"npi\": \"string\",\n      \"firstName\": \"string\",\n      \"lastName\": \"string\",\n      \"credentials\": \"MD\",\n      \"gender\": \"female\",\n      \"organizationName\": \"Mount Sinai\",\n      \"languages\": [\n        \"string\",\n        \"string\"\n      ],\n      \"metrics\": [\n        {\n          \"id\": \"id=\\\"Patient Outcomes\\\"\",\n          \"value\": \"good\"\n        },\n        {\n          \"id\": \"id=\\\"Patient Outcomes\\\"\",\n          \"value\": \"good\"\n        }\n      ],\n      \"overallScore\": 90,\n      \"reviewStars\": 2.012710572349734,\n      \"hours\": [\n        {\n          \"day\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"open\": 8134.841747022899,\n          \"close\": 7610.600193265218\n        },\n        {\n          \"day\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"open\": 6625.069354349228,\n          \"close\": 8121.128465045164\n        }\n      ],\n      \"faxNumber\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c1774fa1-c966-4874-b847-ce8f267a9203",
+              "name": "Invalid request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "providers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "networkId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "plan",
+                      "value": "core"
+                    },
+                    {
+                      "key": "specialty",
+                      "value": "adult_general_gastroenterologist"
+                    },
+                    {
+                      "key": "gender",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "language",
+                      "value": "fas"
+                    },
+                    {
+                      "key": "lat",
+                      "value": "40.8144984"
+                    },
+                    {
+                      "key": "lng",
+                      "value": "-74.259863"
+                    },
+                    {
+                      "key": "zipCode",
+                      "value": "10451"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "15"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) The API major version.",
+                    "key": "Accept-Version",
+                    "value": "<integer>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Correlation ID to be provided on responses",
+                    "key": "Request-ID",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"requestId\": 680.1458024640949,\n  \"data\": {\n    \"key_0\": 7958,\n    \"key_1\": false\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.getgarner.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "fb5dcb95-6080-44c3-a414-0de3b17b12b6",
+    "name": "Garner Health Facilities Providers API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Garner's APIs power its core provider recommendation experience. These recommendations are based on over 60 billion\nanonymized health insurance claims that paint a clear picture of a patient's journey through the healthcare system. \n\nUsing these data, Garner evaluates whether physicians practice evidence-based medicine as defined by major,\nrespected healthcare journals. Garner has designed over 550 clinical and financial metrics that look closely\nat every decision a physician makes rather than relying on standard industry episode groupers. This results in\nrankings that are much more transparent and trustworthy and enable better-informed decisions for patients,\nphysicians, and payers.\n\n# Authentication: \n  \n## OAuth2.0\n\n*If you were provided a JWT at account setup rather than an API client id and client secret, please refer to instructions for [legacy token authentication.](#section/Authentication:/Legacy-token)*\n\nGarner APIs authenticate with OAuth 2.0 access tokens. You will be provided an API client ID and API client secret during account setup. \nThe client ID and client secret can be exchanged for an access token which in turn authenticates your app when making calls to Garner's APIs. \n\nTo obtain an access token, make a request to the `POST oauth2/token/` endpoint. In the request body, include the `client_id`, `client_secret`, \nand `grant_type=client_credentials`. This response will contain an `access_token`, the `token_type` which will always be \"Bearer\", \nand `expires_in` which is the lifetime in seconds of the token. \n\nThe access token can be used to authenticate with Garner's APIs. When making a request, provide the access token as a \nbearer token in the `Authorization` header. \n\nFor example, \n\n**JavaScript**\n```js\n/* Get the token */\nconst { access_token, token_type, expires_in } = await fetch('https://api.getgarner.com/oauth2/token', {\n  method: 'POST',\n  headers: { 'Content-Type': 'application/x-www-form-urlencoded' },\n  body: new URLSearchParams({\n    grant_type: 'client_credentials',\n    client_id: '<YOUR_API_CLIENT_ID_HERE>',\n    client_secret: '<YOUR_API_CLIENT_SECRET_HERE>',\n  }),\n}).then(r => r.json());\n\n\n/* Use the token */\nconst { providers } = fetch(\n  'https://api.getgarner.com/providers',\n  {\n    method: 'GET',\n    headers: {'Authorization': `Bearer ${<YOUR_ACCESS_TOKEN_HERE>}`},\n    query: ...\n  },\n).then(response => response.json());\n\n``` \n**cURL**\n```sh\n# Get the token\ncurl --location 'https://api.garner.health/oauth2/token' \\\n--header 'Content-Type: application/x-www-form-urlencoded' \\\n--data-urlencode 'grant_type=client_credentials' \\\n--data-urlencode 'client_id=<YOUR_API_CLIENT_ID_HERE' \\\n--data-urlencode 'client_secret=<YOUR_API_CLIENT_SECRET_HERE>'\n\n# Use the token\ncurl -G https://api.getgarner.com/providers -H 'Authorization: Bearer <YOUR_ACCESS_TOKEN_HERE>'\n```\n\n\n### Managing the access token\nThe access token will only be valid for 15 minutes. We recommend caching the token in your application so that it can be reused up to its expiration. This can be managed by the app programmatically by implementing a `GarnerTokenClient` class like the following:\n```typescript\nclass GarnerTokenClient {\n  /** Cached access token */\n  private currentToken: string | undefined;\n  /** Time at which the cached token expires */\n  private expirationTime: number | undefined;\n\n  /** \n  *  Fetches a new access token from the `POST /oauth2/token` endpoint,\n  *  then caches the token and its expiration time.\n  *  Returns a promise that resolves to the newly fetched access token\n  */\n  private async fetchNewToken(): Promise<string> {\n    const currentTime = Date.now();\n    const { access_token: accessToken, expires_in: expiresIn } = await fetch('https://api.getgarner.com/oauth2/token', {\n      method: 'POST',\n      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },\n      body: new URLSearchParams({\n        grant_type: 'client_credentials',\n        client_id: '<YOUR_API_CLIENT_ID_HERE>',\n        client_secret: '<YOUR_API_CLIENT_SECRET_HERE>',\n      }),\n    }).then(r => r.json());\n    // Cache the access token\n    this.currentToken = accessToken;\n    // Set the expiration time as the current time plus the number of ms until the token expires. Subtract a 15 second buffer to account for lag.\n    this.expirationTime = (currentTime + expiresIn * 1000) - 15000; \n    return accessToken;\n  }\n\n  /** \n  *  Returns the cached access token if it is valid. \n  *  Otherwise, fetches a new token.\n  */\n  async getToken(): Promise<string> {\n    if (this.currentToken && this.expirationTime && Date.now() < this.expirationTime) {\n      return this.currentToken;\n    }\n    return await this.fetchNewToken();\n  }\n}\n```\n\nThen when making a request to Garner's APIs you can use the response of `getToken()` from an instance of the `GarnerTokenClient` class as your token.\n\nFor example, \n\n```typescript\nconst garnerTokenClient = new GarnerTokenClient();\n\nfetch('https://api.getgarner.com/providers',\n  {\n    method: 'GET',\n    headers: {'Authorization': `Bearer ${await garnerTokenClient.getToken()}`},\n    query: ...\n  },\n);\n\n```\n## Legacy token\n\n*If you were provided an API client id and client secret at account setup rather than a token, please refer to instructions for [OAuth2.0 authentication.](#section/Authentication:/OAuth2.0)*\n\nAuthenticating is done with an JSON Web Token (JWT) provided as a `Bearer` token to the `Authorization` header.\nYou will have received a token during account setup.\n\nFor example, \n```sh\ncurl -G https://api.getgarner.com -H 'Authorization: Bearer <YOUR_API_TOKEN_HERE>'\n```\n",
+      "type": "text/plain"
+    }
+  }
+}

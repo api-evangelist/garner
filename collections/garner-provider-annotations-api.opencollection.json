@@ -1,0 +1,53 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Garner Health Facilities Provider Annotations API",
+    "version": "v1.11.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Provider Annotations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Annotate a Provider record for accuracy",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.getgarner.com/provider-annotations/:provider_id",
+            "headers": [
+              {
+                "name": "Accept-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "provider_id",
+                "value": "p.f3ac4f1a01275ca68e6c932ad4722491",
+                "type": "path",
+                "description": "The Garner ID for the provider."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Annotate a Provider record for accuracy"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

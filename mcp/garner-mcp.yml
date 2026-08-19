@@ -6,19 +6,26 @@ server:
   name: garner
   transport: http
   url: null
-  note: >-
-    No official hosted/remote Garner MCP server found. This is a candidate tool
-    surface derived one-to-one from the Garner Health API operations.
+  note: No official hosted/remote Garner MCP server found. This is a candidate tool surface derived one-to-one
+    from the Garner Health API operations.
 tools:
 - name: get_ranked_providers
-  description: Get a ranked list of Top Provider recommendations near a position (by specialty, plan, network).
+  description: Get a ranked list of Top Provider recommendations near a position (by specialty, plan,
+    network).
   source_operation: openapi/garner-openapi-original.json#GetRankedProviders
 - name: create_provider_annotations
   description: Annotate a provider record for accuracy corrections.
   source_operation: openapi/garner-openapi-original.json#CreateProviderAnnotations
 - name: get_professional
-  description: Get details about a single professional, including per-specialty quality data and practice locations.
+  description: Get details about a single professional, including per-specialty quality data and practice
+    locations.
   source_operation: openapi/garner-openapi-original.json#GetProfessional
 - name: get_facility
   description: Get details about a single facility, including specialty data and directory locations.
   source_operation: openapi/garner-openapi-original.json#GetFacility
+deployment:
+  mode: none
+  verified: derived
+  tools: 4
+  checked: '2026-08-12'
+  source: catalog MCP census

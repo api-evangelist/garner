@@ -1,0 +1,60 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Garner Health Facilities API",
+    "version": "v1.11.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Facilities",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get details about a facility",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.getgarner.com/facilities/:facility_id",
+            "headers": [
+              {
+                "name": "Accept-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "facility_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "location_id",
+                "value": "",
+                "type": "query",
+                "description": "The Garner location ID for a specific location of the requested facility ID."
+              },
+              {
+                "name": "network_id",
+                "value": "",
+                "type": "query",
+                "description": "The list of networks to include on the facility response."
+              }
+            ]
+          },
+          "docs": "This endpoint returns details about a single location of a facility including data for each of the facility's specialties \nand directory data for the requested location.\n\nNote that one facility ID can be related to many different locations. This endpoint \nwill only show data for one location of a facility, according to the location ID included on the request.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

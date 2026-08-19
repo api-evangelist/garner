@@ -1,0 +1,54 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Garner Health Facilities Professionals API",
+    "version": "v1.11.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Professionals",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get details about a professional",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.getgarner.com/professionals/:professional_id",
+            "headers": [
+              {
+                "name": "Accept-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "professional_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "network_id",
+                "value": "",
+                "type": "query",
+                "description": "The list of networks to include on the professional response."
+              }
+            ]
+          },
+          "docs": "This endpoint returns details about a single professional including quality data for each of the professional's specialties, \nand directory data for each location at which the professional practices.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

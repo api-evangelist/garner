@@ -1,0 +1,52 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Garner Health Facilities Providers API",
+    "version": "v1.11.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Providers",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get a list of providers near a position",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.getgarner.com/providers",
+            "headers": [
+              {
+                "name": "Accept-Version",
+                "value": ""
+              },
+              {
+                "name": "Request-ID",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "QueryModeParams",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "This endpoint supports two modes of querying. Depending on the query parameter you provide, a different result\nwill be returned.\n\n| Query Parameter | Search Mode | Query Type | Result Type |\n| -- | -- | -- | -- |\n| `specialty` | Ranked Search | `RankedProviderQuery` | `RankedProviderList` |\n| `name` | Directory Search | `DirectorySearchQuery` | `DirectorySearchResultList` |\n| `npi` | Directory Search | `DirectorySearchQuery` | `DirectorySearchResultList` |\n\n\n### Ranked Search (Primary)\n\nPerforms"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
