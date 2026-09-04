@@ -40,6 +40,7 @@ accessModel:
   confidence: medium
   source:
   - authentication
+  - {url: 'https://www.getgarner.com/', status: 301, note: 'declared website redirects to https://garnerhealth.com/ — a different registrable domain (getgarner.com -> garnerhealth.com), possible rename or acquisition (probed 2026-09-03, roadmap#169)'}
   generated: '2026-07-22'
   method: derived
 image: https://cdn.prod.website-files.com/6994c8f92ae6b0d756f5e541/69b15a86b59f244f1a4d372e_Open%20graph%20img.png
@@ -181,8 +182,9 @@ common:
   url: https://garnerhealth.redoc.ly
 - type: Authentication
   url: authentication/garner-authentication.yml
-- type: MCPServer
+- type: X-MCPServerCandidate
   url: mcp/garner-mcp.yml
+  note: 'Renamed from MCPServer 2026-09-03 (roadmap#247): the manifest self-describes as status: candidate — a tool list derived from the published API contracts, not an existing server. The scorer already read the manifest and reported mcp_server correctly; the MCPServer type was crediting the artifact-type surfaces with a server that does not exist.'
 - type: AgentSkill
   url: skills/_index.yml
 - type: LLMsTxt
