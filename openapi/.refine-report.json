@@ -1,10 +1,7 @@
 {
   "provider": "garner",
   "sources": [
-    "garner-facilities-api-openapi.yml",
-    "garner-professionals-api-openapi.yml",
-    "garner-provider-annotations-api-openapi.yml",
-    "garner-providers-api-openapi.yml"
+    "_original/garner-openapi-original.json"
   ],
   "outputs": [
     "garner-facilities-api-openapi.yml",
@@ -15,6 +12,23 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "garner-openapi-original.json: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
+    "garner-openapi-original.json: tagged paths GET /providers -> Providers",
+    "garner-openapi-original.json: tagged paths POST /provider-annotations/{provider_id} -> Provider Annotations",
+    "garner-openapi-original.json: tagged paths GET /professionals/{professional_id} -> Professionals",
+    "garner-openapi-original.json: tagged paths GET /facilities/{facility_id} -> Facilities",
+    "garner-openapi-original.json: declared missing tag: Facilities",
+    "garner-openapi-original.json: declared missing tag: Professionals",
+    "garner-openapi-original.json: declared missing tag: Provider Annotations",
+    "garner-openapi-original.json: declared missing tag: Providers",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "garner-facilities-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "garner-professionals-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "garner-provider-annotations-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "garner-providers-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }
