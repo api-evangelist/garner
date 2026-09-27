@@ -49,38 +49,6 @@ paths:
       - Provider Annotations
 components:
   schemas:
-    CreateAnnotationParams:
-      type: object
-      properties:
-        locationId:
-          type: string
-          description: id of the provider's location
-          example: c52305b90e2a5ce08ce6f0a621acd22f
-        annotations:
-          type: array
-          items:
-            $ref: '#/components/schemas/Annotation'
-          description: List of annotations for the provider record
-          example:
-          - field: phoneNumber
-            isCorrect: false
-            value: 2121126544
-            correctedValue: 2121126542
-      required:
-      - locationId
-      - annotations
-      additionalProperties: false
-    CreateAnnotation.ResponseBody:
-      type: object
-      properties:
-        count:
-          type: number
-          description: Number of annotations created
-          example: 1
-      required:
-      - count
-      additionalProperties: false
-      description: Returns number of annotations created
     Annotation:
       type: object
       properties:
@@ -113,19 +81,6 @@ components:
       - value
       - isCorrect
       additionalProperties: false
-    ServiceError:
-      type: object
-      properties:
-        requestId:
-          type: number
-        message:
-          type: string
-        data:
-          type: object
-          additionalProperties: true
-      required:
-      - message
-      additionalProperties: false
     CreateAnnotation.RequestBody:
       $ref: '#/components/schemas/CreateAnnotationParams'
     AnnotationField:
@@ -144,6 +99,51 @@ components:
       - city
       - state
       - zipCode
+    ServiceError:
+      type: object
+      properties:
+        requestId:
+          type: number
+        message:
+          type: string
+        data:
+          type: object
+          additionalProperties: true
+      required:
+      - message
+      additionalProperties: false
+    CreateAnnotationParams:
+      type: object
+      properties:
+        locationId:
+          type: string
+          description: id of the provider's location
+          example: c52305b90e2a5ce08ce6f0a621acd22f
+        annotations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Annotation'
+          description: List of annotations for the provider record
+          example:
+          - field: phoneNumber
+            isCorrect: false
+            value: 2121126544
+            correctedValue: 2121126542
+      required:
+      - locationId
+      - annotations
+      additionalProperties: false
+    CreateAnnotation.ResponseBody:
+      type: object
+      properties:
+        count:
+          type: number
+          description: Number of annotations created
+          example: 1
+      required:
+      - count
+      additionalProperties: false
+      description: Returns number of annotations created
   parameters:
     acceptVersion:
       name: Accept-Version

@@ -68,49 +68,32 @@ paths:
       tags:
       - Facilities
 components:
-  responses:
-    NotFound:
-      description: Resource not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ServiceError'
-  parameters:
-    acceptVersion:
-      name: Accept-Version
-      in: header
-      required: true
-      schema:
-        type: integer
-        enum:
-        - 1
-      description: The API major version.
   schemas:
-    ServiceError:
+    Position:
+      description: Global coordinates
       type: object
       properties:
-        requestId:
+        lat:
           type: number
-        message:
-          type: string
-        data:
-          type: object
-          additionalProperties: true
+          description: Latitude
+        lng:
+          type: number
+          description: Longitude
       required:
-      - message
+      - lat
+      - lng
       additionalProperties: false
-    WorkingHours:
-      description: The days and times of day the provider's office is open
-      type: object
-      properties:
-        day:
-          $ref: '#/components/schemas/DayOfWeek'
-        open:
-          type: number
-          description: The time of day the office opens. Represented as minutes after midnight
-        close:
-          type: number
-          description: The time of day the office closes. Represented as minutes after midnight
+    DayOfWeek:
+      type: number
+      enum:
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      - 7
+      description: ISO day of week (e.g. 1 is Monday)
     FacilityNetwork:
       type: object
       properties:
@@ -123,6 +106,19 @@ components:
       required:
       - network_id
       - is_in_network
+      additionalProperties: false
+    ServiceError:
+      type: object
+      properties:
+        requestId:
+          type: number
+        message:
+          type: string
+        data:
+          type: object
+          additionalProperties: true
+      required:
+      - message
       additionalProperties: false
     Facility:
       type: object
@@ -242,20 +238,18 @@ components:
       - state
       - zip_code
       - position
-    Position:
-      description: Global coordinates
+    WorkingHours:
+      description: The days and times of day the provider's office is open
       type: object
       properties:
-        lat:
+        day:
+          $ref: '#/components/schemas/DayOfWeek'
+        open:
           type: number
-          description: Latitude
-        lng:
+          description: The time of day the office opens. Represented as minutes after midnight
+        close:
           type: number
-          description: Longitude
-      required:
-      - lat
-      - lng
-      additionalProperties: false
+          description: The time of day the office closes. Represented as minutes after midnight
     FacilitySpecialtyLocation:
       type: object
       properties:
@@ -265,17 +259,6 @@ components:
             $ref: '#/components/schemas/FacilityNetwork'
       required:
       - networks
-    DayOfWeek:
-      type: number
-      enum:
-      - 1
-      - 2
-      - 3
-      - 4
-      - 5
-      - 6
-      - 7
-      description: ISO day of week (e.g. 1 is Monday)
     FacilityLocation:
       description: The address of the facility
       allOf:
@@ -287,6 +270,23 @@ components:
         required:
         - location_id
       - $ref: '#/components/schemas/LocationBase'
+  responses:
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ServiceError'
+  parameters:
+    acceptVersion:
+      name: Accept-Version
+      in: header
+      required: true
+      schema:
+        type: integer
+        enum:
+        - 1
+      description: The API major version.
   securitySchemes:
     ApiToken:
       type: http
