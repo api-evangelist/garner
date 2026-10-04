@@ -49,6 +49,17 @@ paths:
       - Provider Annotations
 components:
   schemas:
+    CreateAnnotation.ResponseBody:
+      type: object
+      properties:
+        count:
+          type: number
+          description: Number of annotations created
+          example: 1
+      required:
+      - count
+      additionalProperties: false
+      description: Returns number of annotations created
     Annotation:
       type: object
       properties:
@@ -94,17 +105,22 @@ components:
       required:
       - message
       additionalProperties: false
-    CreateAnnotation.ResponseBody:
-      type: object
-      properties:
-        count:
-          type: number
-          description: Number of annotations created
-          example: 1
-      required:
-      - count
-      additionalProperties: false
-      description: Returns number of annotations created
+    AnnotationField:
+      type: string
+      enum:
+      - specialty
+      - phoneNumber
+      - firstName
+      - lastName
+      - locationName
+      - gender
+      - credentials
+      - faxNumber
+      - street1
+      - street2
+      - city
+      - state
+      - zipCode
     CreateAnnotation.RequestBody:
       $ref: '#/components/schemas/CreateAnnotationParams'
     CreateAnnotationParams:
@@ -128,22 +144,6 @@ components:
       - locationId
       - annotations
       additionalProperties: false
-    AnnotationField:
-      type: string
-      enum:
-      - specialty
-      - phoneNumber
-      - firstName
-      - lastName
-      - locationName
-      - gender
-      - credentials
-      - faxNumber
-      - street1
-      - street2
-      - city
-      - state
-      - zipCode
   parameters:
     acceptVersion:
       name: Accept-Version

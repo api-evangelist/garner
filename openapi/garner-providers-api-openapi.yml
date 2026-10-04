@@ -91,6 +91,98 @@ paths:
       - Providers
 components:
   schemas:
+    WorkingHours:
+      description: The days and times of day the provider's office is open
+      type: object
+      properties:
+        day:
+          $ref: '#/components/schemas/DayOfWeek'
+        open:
+          type: number
+          description: The time of day the office opens. Represented as minutes after midnight
+        close:
+          type: number
+          description: The time of day the office closes. Represented as minutes after midnight
+    RankedProviderList:
+      type: object
+      properties:
+        providers:
+          type: array
+          items:
+            $ref: '#/components/schemas/RankedProvider'
+          description: The result list of providers (professionals or facilities) for the request. The providers are in rank order.
+      required:
+      - providers
+    BaseQuery:
+      type: object
+      properties:
+        lat:
+          type: number
+          description: Latitude of the origin of the query. Must be combined with `lng`. Must not be combined with `zipCode`
+          example: 40.8144984
+        lng:
+          type: number
+          description: Longitude of the origin of the query. Must be combined with `lat`. Must not be combined with `zipCode`
+          example: -74.259863
+        zipCode:
+          format: '[0-9]{5}'
+          type: string
+          description: The center of this ZIP-5 code to use as the origin of the query. Must not be combined with `lat` or `lng`
+          example: '10451'
+        plan:
+          type: string
+          description: The data subscription plan associated with your account. Contact your account manager for the correct value to this parameter.
+          example: core
+        limit:
+          type: number
+          description: The maximum number of providers to include in the response. Defaults to 15.
+          example: 15
+          maximum: 30
+          default: 15
+      required:
+      - plan
+    Location:
+      description: The office location of a provider
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier for this location
+        name:
+          type: string
+          description: Name of the office or facility for the associated location and provider. Only returned if provider is a professional rather than a facility
+        providerCorporationName:
+          type: string
+          description: The primary provider corporation (e.g. health system) affiliated with this location. When both `providerCorporationName` and `allProviderCorporations` are present, the value here is also included in `allProviderCorporations`. Only returned when the provider is a professional and the corporation is known.
+          example: NYU Langone Health
+        allProviderCorporations:
+          type: array
+          items:
+            type: string
+          description: All provider corporations (e.g. health systems) the professional is affiliated with at this location. When `providerCorporationName` is also returned, it is the primary entry in this list. Only returned when the provider is a professional and at least one affiliation is known.
+          example:
+          - NYU Langone Health
+          - Mount Sinai Health System
+        lines:
+          type: array
+          items:
+            type: string
+          description: The lines of an address, in order
+        city:
+          type: string
+          description: The city of the address
+        state:
+          type: string
+          description: The state of the address
+        position:
+          $ref: '#/components/schemas/Position'
+      required:
+      - lines
+      - city
+      - state
+      - zipCode
+      - position
+      additionalProperties: false
     DirectorySearchResultList:
       type: object
       properties:
@@ -101,6 +193,137 @@ components:
           description: The result list of professionals for the request.
       required:
       - providers
+    ProviderDirectoryEntry:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the provider
+        npi:
+          type: string
+          description: National Provider Identifier
+        firstName:
+          type: string
+          description: First name of the provider.
+        lastName:
+          type: string
+          description: Last name of the provider.
+        credentials:
+          type: string
+          description: Degrees and certifications held by the provider. Only returned if provider is a professional rather than a facility
+          example: MD
+        gender:
+          $ref: '#/components/schemas/Gender'
+        specialty:
+          type: string
+          description: The specialty identifier for the provider
+          example: adult_general_gastroenterologist
+        networkStatus:
+          type: boolean
+          description: Whether the doctor is in-network with the network specified in the query parameters
+        languages:
+          type: array
+          items:
+            type: string
+            format: '[a-z]{3}'
+          description: List of languages spoken by the provider. Languages are [ISO639-3](https://iso639-3.sil.org/code_tables/639/data) codes. Only returned if provider is a professional rather than a facility
+        location:
+          $ref: '#/components/schemas/Location'
+        hours:
+          type: array
+          items:
+            $ref: '#/components/schemas/WorkingHours'
+        phoneNumber:
+          type: string
+          format: '[0-9]{10}'
+          description: 10-digit phone number
+          example: 5555555555
+        faxNumber:
+          type: string
+          format: '[0-9]{10}'
+          description: 10-digit phone number
+          example: 5555555555
+        distanceMi:
+          type: number
+          description: The driving distance to the location in miles
+      required:
+      - distanceMi
+      - id
+      - location
+      - phoneNumber
+      - specialty
+      additionalProperties: false
+      description: A ranked provider
+      example:
+        id: p.f3ac4f1a01275ca68e6c932ad4722491
+        npi: 1231766309
+        firstName: Sepideh
+        lastName: Baghian
+        credentials: MD
+        gender: female
+        specialty: adult_general_gastroenterologist
+        languages:
+        - eng
+        - fas
+        location:
+          id: fc8b2f21-506c-5c7c-a96f-a4580bd9ba87
+          name: Mount Sinai Morningside Cardiovascular Institute
+          providerCorporationName: Mount Sinai Health System
+          allProviderCorporations:
+          - Mount Sinai Health System
+          - NYC Health + Hospitals
+          city: New York
+          lines:
+          - 440 W 114th St 2nd Fl Ste 220
+          position:
+            lat: 40.8053
+            lng: -73.9618
+          state: NY
+          zipCode: '10025'
+        hours:
+        - day: 1
+          open: 480
+          close: 1020
+        - day: 2
+          open: 480
+          close: 1020
+        - day: 3
+          open: 480
+          close: 1020
+        - day: 4
+          open: 480
+          close: 1020
+        - day: 5
+          open: 480
+          close: 1020
+        phoneNumber: '2124271540'
+        faxNumber: '2124107196'
+        distanceMi: 3.50453352288
+        networkStatus: true
+    RankedProviderQuery:
+      allOf:
+      - type: object
+        properties:
+          specialty:
+            type: string
+            description: Specialty code to query.
+            example: adult_general_gastroenterologist
+          networkId:
+            type: string
+            description: Filters results to a given carrier network when included.
+          gender:
+            type: string
+            enum:
+            - male
+            - female
+            description: Filters results to a given gender. If omitted, no gender filter will be applied.
+          language:
+            type: string
+            description: Filters results to require a given language to be spoken by the provider. If omitted, no language filter will be applied. Must be provided as a [ISO639-3](https://iso639-3.sil.org/code_tables/639/data) code.
+            example: fas
+        required:
+        - networkId
+      - $ref: '#/components/schemas/BaseQuery'
     DirectorySearchQuery:
       allOf:
       - type: object
@@ -130,18 +353,6 @@ components:
         required:
         - networkId
       - $ref: '#/components/schemas/BaseQuery'
-    WorkingHours:
-      description: The days and times of day the provider's office is open
-      type: object
-      properties:
-        day:
-          $ref: '#/components/schemas/DayOfWeek'
-        open:
-          type: number
-          description: The time of day the office opens. Represented as minutes after midnight
-        close:
-          type: number
-          description: The time of day the office closes. Represented as minutes after midnight
     ServiceError:
       type: object
       properties:
@@ -155,58 +366,12 @@ components:
       required:
       - message
       additionalProperties: false
-    RankedProviderList:
-      type: object
-      properties:
-        providers:
-          type: array
-          items:
-            $ref: '#/components/schemas/RankedProvider'
-          description: The result list of providers (professionals or facilities) for the request. The providers are in rank order.
-      required:
-      - providers
-    Position:
-      description: Global coordinates
-      type: object
-      properties:
-        lat:
-          type: number
-          description: Latitude
-        lng:
-          type: number
-          description: Longitude
-      required:
-      - lat
-      - lng
-      additionalProperties: false
-    BaseQuery:
-      type: object
-      properties:
-        lat:
-          type: number
-          description: Latitude of the origin of the query. Must be combined with `lng`. Must not be combined with `zipCode`
-          example: 40.8144984
-        lng:
-          type: number
-          description: Longitude of the origin of the query. Must be combined with `lat`. Must not be combined with `zipCode`
-          example: -74.259863
-        zipCode:
-          format: '[0-9]{5}'
-          type: string
-          description: The center of this ZIP-5 code to use as the origin of the query. Must not be combined with `lat` or `lng`
-          example: '10451'
-        plan:
-          type: string
-          description: The data subscription plan associated with your account. Contact your account manager for the correct value to this parameter.
-          example: core
-        limit:
-          type: number
-          description: The maximum number of providers to include in the response. Defaults to 15.
-          example: 15
-          maximum: 30
-          default: 15
-      required:
-      - plan
+    Gender:
+      type: string
+      enum:
+      - male
+      - female
+      description: Gender. Only returned if provider is a professional rather than a facility
     RankedProvider:
       type: object
       properties:
@@ -351,160 +516,19 @@ components:
         phoneNumber: '2124271540'
         faxNumber: '2124107196'
         distanceMi: 3.50453352288
-    ProviderDirectoryEntry:
+    Position:
+      description: Global coordinates
       type: object
       properties:
-        id:
-          type: string
-          description: Unique identifier for the provider
-        npi:
-          type: string
-          description: National Provider Identifier
-        firstName:
-          type: string
-          description: First name of the provider.
-        lastName:
-          type: string
-          description: Last name of the provider.
-        credentials:
-          type: string
-          description: Degrees and certifications held by the provider. Only returned if provider is a professional rather than a facility
-          example: MD
-        gender:
-          $ref: '#/components/schemas/Gender'
-        specialty:
-          type: string
-          description: The specialty identifier for the provider
-          example: adult_general_gastroenterologist
-        networkStatus:
-          type: boolean
-          description: Whether the doctor is in-network with the network specified in the query parameters
-        languages:
-          type: array
-          items:
-            type: string
-            format: '[a-z]{3}'
-          description: List of languages spoken by the provider. Languages are [ISO639-3](https://iso639-3.sil.org/code_tables/639/data) codes. Only returned if provider is a professional rather than a facility
-        location:
-          $ref: '#/components/schemas/Location'
-        hours:
-          type: array
-          items:
-            $ref: '#/components/schemas/WorkingHours'
-        phoneNumber:
-          type: string
-          format: '[0-9]{10}'
-          description: 10-digit phone number
-          example: 5555555555
-        faxNumber:
-          type: string
-          format: '[0-9]{10}'
-          description: 10-digit phone number
-          example: 5555555555
-        distanceMi:
+        lat:
           type: number
-          description: The driving distance to the location in miles
+          description: Latitude
+        lng:
+          type: number
+          description: Longitude
       required:
-      - distanceMi
-      - id
-      - location
-      - phoneNumber
-      - specialty
-      additionalProperties: false
-      description: A ranked provider
-      example:
-        id: p.f3ac4f1a01275ca68e6c932ad4722491
-        npi: 1231766309
-        firstName: Sepideh
-        lastName: Baghian
-        credentials: MD
-        gender: female
-        specialty: adult_general_gastroenterologist
-        languages:
-        - eng
-        - fas
-        location:
-          id: fc8b2f21-506c-5c7c-a96f-a4580bd9ba87
-          name: Mount Sinai Morningside Cardiovascular Institute
-          providerCorporationName: Mount Sinai Health System
-          allProviderCorporations:
-          - Mount Sinai Health System
-          - NYC Health + Hospitals
-          city: New York
-          lines:
-          - 440 W 114th St 2nd Fl Ste 220
-          position:
-            lat: 40.8053
-            lng: -73.9618
-          state: NY
-          zipCode: '10025'
-        hours:
-        - day: 1
-          open: 480
-          close: 1020
-        - day: 2
-          open: 480
-          close: 1020
-        - day: 3
-          open: 480
-          close: 1020
-        - day: 4
-          open: 480
-          close: 1020
-        - day: 5
-          open: 480
-          close: 1020
-        phoneNumber: '2124271540'
-        faxNumber: '2124107196'
-        distanceMi: 3.50453352288
-        networkStatus: true
-    Gender:
-      type: string
-      enum:
-      - male
-      - female
-      description: Gender. Only returned if provider is a professional rather than a facility
-    Location:
-      description: The office location of a provider
-      type: object
-      properties:
-        id:
-          type: string
-          description: The unique identifier for this location
-        name:
-          type: string
-          description: Name of the office or facility for the associated location and provider. Only returned if provider is a professional rather than a facility
-        providerCorporationName:
-          type: string
-          description: The primary provider corporation (e.g. health system) affiliated with this location. When both `providerCorporationName` and `allProviderCorporations` are present, the value here is also included in `allProviderCorporations`. Only returned when the provider is a professional and the corporation is known.
-          example: NYU Langone Health
-        allProviderCorporations:
-          type: array
-          items:
-            type: string
-          description: All provider corporations (e.g. health systems) the professional is affiliated with at this location. When `providerCorporationName` is also returned, it is the primary entry in this list. Only returned when the provider is a professional and at least one affiliation is known.
-          example:
-          - NYU Langone Health
-          - Mount Sinai Health System
-        lines:
-          type: array
-          items:
-            type: string
-          description: The lines of an address, in order
-        city:
-          type: string
-          description: The city of the address
-        state:
-          type: string
-          description: The state of the address
-        position:
-          $ref: '#/components/schemas/Position'
-      required:
-      - lines
-      - city
-      - state
-      - zipCode
-      - position
+      - lat
+      - lng
       additionalProperties: false
     DayOfWeek:
       type: number
@@ -517,30 +541,6 @@ components:
       - 6
       - 7
       description: ISO day of week (e.g. 1 is Monday)
-    RankedProviderQuery:
-      allOf:
-      - type: object
-        properties:
-          specialty:
-            type: string
-            description: Specialty code to query.
-            example: adult_general_gastroenterologist
-          networkId:
-            type: string
-            description: Filters results to a given carrier network when included.
-          gender:
-            type: string
-            enum:
-            - male
-            - female
-            description: Filters results to a given gender. If omitted, no gender filter will be applied.
-          language:
-            type: string
-            description: Filters results to require a given language to be spoken by the provider. If omitted, no language filter will be applied. Must be provided as a [ISO639-3](https://iso639-3.sil.org/code_tables/639/data) code.
-            example: fas
-        required:
-        - networkId
-      - $ref: '#/components/schemas/BaseQuery'
   parameters:
     acceptVersion:
       name: Accept-Version
