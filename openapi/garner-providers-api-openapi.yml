@@ -91,6 +91,20 @@ paths:
       - Providers
 components:
   schemas:
+    Position:
+      description: Global coordinates
+      type: object
+      properties:
+        lat:
+          type: number
+          description: Latitude
+        lng:
+          type: number
+          description: Longitude
+      required:
+      - lat
+      - lng
+      additionalProperties: false
     WorkingHours:
       description: The days and times of day the provider's office is open
       type: object
@@ -103,14 +117,56 @@ components:
         close:
           type: number
           description: The time of day the office closes. Represented as minutes after midnight
-    RankedProviderList:
+    DirectorySearchQuery:
+      allOf:
+      - type: object
+        properties:
+          name:
+            type: string
+            description: Name or partial name of the provider. Must not be combined with `npi`
+            example: Mark Smith
+          npi:
+            format: '[0-9]{9}'
+            type: string
+            description: The unique identifier for the provider. Must not be combined with `name`
+            example: 123456789
+          networkId:
+            type: string
+            description: "When included, the `networkStatus` attribute of the result will indicate whether the physician is \nin-network with the given network.\n"
+          gender:
+            type: string
+            enum:
+            - male
+            - female
+            description: Filters results to a given gender. If omitted, no gender filter will be applied.
+          language:
+            type: string
+            description: Filters results to require a given language to be spoken by the provider. If omitted, no language filter will be applied. Must be provided as a [ISO639-3](https://iso639-3.sil.org/code_tables/639/data) code.
+            example: fas
+        required:
+        - networkId
+      - $ref: '#/components/schemas/BaseQuery'
+    ServiceError:
+      type: object
+      properties:
+        requestId:
+          type: number
+        message:
+          type: string
+        data:
+          type: object
+          additionalProperties: true
+      required:
+      - message
+      additionalProperties: false
+    DirectorySearchResultList:
       type: object
       properties:
         providers:
           type: array
           items:
-            $ref: '#/components/schemas/RankedProvider'
-          description: The result list of providers (professionals or facilities) for the request. The providers are in rank order.
+            $ref: '#/components/schemas/ProviderDirectoryEntry'
+          description: The result list of professionals for the request.
       required:
       - providers
     BaseQuery:
@@ -141,58 +197,6 @@ components:
           default: 15
       required:
       - plan
-    Location:
-      description: The office location of a provider
-      type: object
-      properties:
-        id:
-          type: string
-          description: The unique identifier for this location
-        name:
-          type: string
-          description: Name of the office or facility for the associated location and provider. Only returned if provider is a professional rather than a facility
-        providerCorporationName:
-          type: string
-          description: The primary provider corporation (e.g. health system) affiliated with this location. When both `providerCorporationName` and `allProviderCorporations` are present, the value here is also included in `allProviderCorporations`. Only returned when the provider is a professional and the corporation is known.
-          example: NYU Langone Health
-        allProviderCorporations:
-          type: array
-          items:
-            type: string
-          description: All provider corporations (e.g. health systems) the professional is affiliated with at this location. When `providerCorporationName` is also returned, it is the primary entry in this list. Only returned when the provider is a professional and at least one affiliation is known.
-          example:
-          - NYU Langone Health
-          - Mount Sinai Health System
-        lines:
-          type: array
-          items:
-            type: string
-          description: The lines of an address, in order
-        city:
-          type: string
-          description: The city of the address
-        state:
-          type: string
-          description: The state of the address
-        position:
-          $ref: '#/components/schemas/Position'
-      required:
-      - lines
-      - city
-      - state
-      - zipCode
-      - position
-      additionalProperties: false
-    DirectorySearchResultList:
-      type: object
-      properties:
-        providers:
-          type: array
-          items:
-            $ref: '#/components/schemas/ProviderDirectoryEntry'
-          description: The result list of professionals for the request.
-      required:
-      - providers
     ProviderDirectoryEntry:
       type: object
       properties:
@@ -300,6 +304,16 @@ components:
         faxNumber: '2124107196'
         distanceMi: 3.50453352288
         networkStatus: true
+    RankedProviderList:
+      type: object
+      properties:
+        providers:
+          type: array
+          items:
+            $ref: '#/components/schemas/RankedProvider'
+          description: The result list of providers (professionals or facilities) for the request. The providers are in rank order.
+      required:
+      - providers
     RankedProviderQuery:
       allOf:
       - type: object
@@ -324,54 +338,54 @@ components:
         required:
         - networkId
       - $ref: '#/components/schemas/BaseQuery'
-    DirectorySearchQuery:
-      allOf:
-      - type: object
-        properties:
-          name:
-            type: string
-            description: Name or partial name of the provider. Must not be combined with `npi`
-            example: Mark Smith
-          npi:
-            format: '[0-9]{9}'
-            type: string
-            description: The unique identifier for the provider. Must not be combined with `name`
-            example: 123456789
-          networkId:
-            type: string
-            description: "When included, the `networkStatus` attribute of the result will indicate whether the physician is \nin-network with the given network.\n"
-          gender:
-            type: string
-            enum:
-            - male
-            - female
-            description: Filters results to a given gender. If omitted, no gender filter will be applied.
-          language:
-            type: string
-            description: Filters results to require a given language to be spoken by the provider. If omitted, no language filter will be applied. Must be provided as a [ISO639-3](https://iso639-3.sil.org/code_tables/639/data) code.
-            example: fas
-        required:
-        - networkId
-      - $ref: '#/components/schemas/BaseQuery'
-    ServiceError:
-      type: object
-      properties:
-        requestId:
-          type: number
-        message:
-          type: string
-        data:
-          type: object
-          additionalProperties: true
-      required:
-      - message
-      additionalProperties: false
     Gender:
       type: string
       enum:
       - male
       - female
       description: Gender. Only returned if provider is a professional rather than a facility
+    Location:
+      description: The office location of a provider
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier for this location
+        name:
+          type: string
+          description: Name of the office or facility for the associated location and provider. Only returned if provider is a professional rather than a facility
+        providerCorporationName:
+          type: string
+          description: The primary provider corporation (e.g. health system) affiliated with this location. When both `providerCorporationName` and `allProviderCorporations` are present, the value here is also included in `allProviderCorporations`. Only returned when the provider is a professional and the corporation is known.
+          example: NYU Langone Health
+        allProviderCorporations:
+          type: array
+          items:
+            type: string
+          description: All provider corporations (e.g. health systems) the professional is affiliated with at this location. When `providerCorporationName` is also returned, it is the primary entry in this list. Only returned when the provider is a professional and at least one affiliation is known.
+          example:
+          - NYU Langone Health
+          - Mount Sinai Health System
+        lines:
+          type: array
+          items:
+            type: string
+          description: The lines of an address, in order
+        city:
+          type: string
+          description: The city of the address
+        state:
+          type: string
+          description: The state of the address
+        position:
+          $ref: '#/components/schemas/Position'
+      required:
+      - lines
+      - city
+      - state
+      - zipCode
+      - position
+      additionalProperties: false
     RankedProvider:
       type: object
       properties:
@@ -516,20 +530,6 @@ components:
         phoneNumber: '2124271540'
         faxNumber: '2124107196'
         distanceMi: 3.50453352288
-    Position:
-      description: Global coordinates
-      type: object
-      properties:
-        lat:
-          type: number
-          description: Latitude
-        lng:
-          type: number
-          description: Longitude
-      required:
-      - lat
-      - lng
-      additionalProperties: false
     DayOfWeek:
       type: number
       enum:

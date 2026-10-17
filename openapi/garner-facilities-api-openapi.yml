@@ -69,27 +69,17 @@ paths:
       - Facilities
 components:
   schemas:
-    WorkingHours:
-      description: The days and times of day the provider's office is open
-      type: object
-      properties:
-        day:
-          $ref: '#/components/schemas/DayOfWeek'
-        open:
-          type: number
-          description: The time of day the office opens. Represented as minutes after midnight
-        close:
-          type: number
-          description: The time of day the office closes. Represented as minutes after midnight
-    FacilitySpecialtyLocation:
-      type: object
-      properties:
-        networks:
-          type: array
-          items:
-            $ref: '#/components/schemas/FacilityNetwork'
-      required:
-      - networks
+    FacilityLocation:
+      description: The address of the facility
+      allOf:
+      - type: object
+        properties:
+          location_id:
+            description: Unique identifier for the location
+            type: string
+        required:
+        - location_id
+      - $ref: '#/components/schemas/LocationBase'
     LocationBase:
       type: object
       properties:
@@ -235,6 +225,38 @@ components:
       - lat
       - lng
       additionalProperties: false
+    WorkingHours:
+      description: The days and times of day the provider's office is open
+      type: object
+      properties:
+        day:
+          $ref: '#/components/schemas/DayOfWeek'
+        open:
+          type: number
+          description: The time of day the office opens. Represented as minutes after midnight
+        close:
+          type: number
+          description: The time of day the office closes. Represented as minutes after midnight
+    FacilitySpecialtyLocation:
+      type: object
+      properties:
+        networks:
+          type: array
+          items:
+            $ref: '#/components/schemas/FacilityNetwork'
+      required:
+      - networks
+    DayOfWeek:
+      type: number
+      enum:
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      - 7
+      description: ISO day of week (e.g. 1 is Monday)
     FacilityNetwork:
       type: object
       properties:
@@ -248,28 +270,6 @@ components:
       - network_id
       - is_in_network
       additionalProperties: false
-    FacilityLocation:
-      description: The address of the facility
-      allOf:
-      - type: object
-        properties:
-          location_id:
-            description: Unique identifier for the location
-            type: string
-        required:
-        - location_id
-      - $ref: '#/components/schemas/LocationBase'
-    DayOfWeek:
-      type: number
-      enum:
-      - 1
-      - 2
-      - 3
-      - 4
-      - 5
-      - 6
-      - 7
-      description: ISO day of week (e.g. 1 is Monday)
   responses:
     NotFound:
       description: Resource not found
