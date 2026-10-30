@@ -64,6 +64,115 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Garner is a company surfaced as a portfolio company of redpoint-ventures and added to the API Evangelist network as a stub for enrichment. Sector: healthtech. This profile is a lead awaiting the enrichment pipeline.
+Garner Health is a healthcare technology company that helps members find high-quality, in-network doctors while helping employers, advisors, health plans, and providers improve care quality and lower costs. Garner analyzes more than 60 billion de-identified medical records from 320M+ patients and applies 550+ specialty-specific quality and efficiency metrics across 80+ specialties to identify Top Providers, delivered as an employer-funded benefit layered on top of existing insurance and as the Garner DataPro provider-recommendation data service. The Garner Health API (v1.x, OpenAPI 3.0.3) exposes ranked provider search, professional and facility directory detail, and provider-record annotation, authenticated with OAuth 2.0 client-credentials tokens.
 
-Backed by: redpoint-ventures — https://www.getgarner.com/
+**Areas:** Company · Health Tech · Healthcare · Provider Data · Care Navigation · Health Insurance · Claims Analytics · Provider Search · Doctor Quality
+
+## Garner on APIs.io
+
+Everything profiled for Garner is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/garner/](https://apis.io/providers/garner/)** — or go straight to one of the APIs or properties below.
+
+### APIs (4)
+
+- [Garner Facilities API](https://apis.io/apis/garner/garner-facilities-api/) — The Facilities API from Garner — 1 operation(s) for facilities.
+- [Garner Professionals API](https://apis.io/apis/garner/garner-professionals-api/) — The Professionals API from Garner — 1 operation(s) for professionals.
+- [Garner Provider Annotations API](https://apis.io/apis/garner/garner-provider-annotations-api/) — The Provider Annotations API from Garner — 1 operation(s) for provider annotations.
+- [Garner Providers API](https://apis.io/apis/garner/garner-providers-api/) — The Providers API from Garner — 1 operation(s) for providers.
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [garner](https://apis.io/servers/garner/garner/)
+
+#### Collections (4)
+
+Postman and Open Collection request collections.
+
+- [Garner Health Facilities API](https://apis.io/collections/garner/open-garner-facilities-api/)
+- [Garner Health Facilities Professionals API](https://apis.io/collections/garner/open-garner-professionals-api/)
+- [Garner Health Facilities Provider Annotations API](https://apis.io/collections/garner/open-garner-provider-annotations-api/)
+- [Garner Health Facilities Providers API](https://apis.io/collections/garner/open-garner-providers-api/)
+
+#### Overlays (1)
+
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [Garner Openapi Overlay](https://apis.io/overlays/garner/garner-openapi-overlay/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Garner Authentication](https://apis.io/security/garner/garner-authentication/)
+- [Garner Domain Security](https://apis.io/security/garner/garner-domain-security/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://www.getgarner.com/)
+- [Documentation](https://garnerhealth.redoc.ly)
+- [API reference](https://garnerhealth.redoc.ly)
+- [Support](https://garnerhealth.com/contact)
+- [Blog](https://garnerhealth.com/blog)
+- [Compliance](https://www.getgarner.com/news/garner-completes-soc-2-type-ii-certification)
+- [Terms of service](https://garnerhealth.com/terms-of-service)
+- [Privacy policy](https://garnerhealth.com/privacy-policy)
+
+## API Evangelist rating
+
+**Kin Score 37.8** — thin · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 73.2 |
+| Contract quality | 49.3 |
+| Contract governance | 18.2 |
+| Operational transparency | 0.0 |
+| Developer ergonomics | 47.0 |
+| Access clarity | 28.9 |
+
+**Agent readiness 19.6** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | derived (partial credit) |
+| OpenAPI Examples | partial |
+| Rate Limit Signal | — |
+| Event Surface Described | — |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 26.3** — Insurance
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/garner/](https://apis.io/providers/garner/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Garner: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/garner/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
